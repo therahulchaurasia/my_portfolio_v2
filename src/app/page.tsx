@@ -4,6 +4,7 @@ import Services from "@/components/sections/services"
 import WhyMe from "@/components/sections/why-me"
 import Faq from "@/components/sections/faq"
 import Contact from "@/components/sections/contact"
+import ProgressiveBlur from "@/components/progressive-blur"
 
 export default function Home() {
   return (
@@ -14,6 +15,8 @@ export default function Home() {
       <WhyMe />
       <Faq />
       <Contact />
+      {/* TODO: demo placement — move/remove once final position is decided */}
+      {/* <ProgressiveBlur tint={false} className="fixed inset-x-0 bottom-0 z-50 h-[10svh]" /> */}
     </main>
   )
 }

@@ -1,14 +1,16 @@
 import Section from "@/components/section"
 import Container from "@/components/container"
+import SectionHeading from "@/components/section-heading"
 
 // FAQs — common questions.
 export default function Faq() {
   return (
     <Container>
-      <Section id="faq">
-        <h2 className="text-4xl font-semibold tracking-[-0.03em] md:text-6xl">
-          FAQs
-        </h2>
+      <Section id="faq" className="py-15 md:py-20">
+        <SectionHeading
+          title="FAQs"
+          subtext="Answers to the questions I get asked most before a project starts."
+        />
       </Section>
     </Container>
   )

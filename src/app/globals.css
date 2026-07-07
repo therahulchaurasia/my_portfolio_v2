@@ -5,7 +5,7 @@
 
 :root {
   --background: #f5f5f5;
-  --foreground: #171717;
+  --foreground: #121212;
   --line: #0000001a;
   color-scheme: light;
 }
@@ -17,6 +17,25 @@
   --color-primary: #0656ba;
   --color-line: var(--line);
   --font-sans: var(--font-inter);
+}
+
+/* Marquee animation tokens live in a non-inline @theme so Tailwind registers
+   the `animate-*` utilities and emits the keyframes. Inner track holds two
+   copies stacked; shifting by 50% swaps copy 1 for copy 2 seamlessly, loops. */
+@theme {
+  --animate-marquee-up: marquee-up var(--marquee-duration, 40s) linear infinite;
+  --animate-marquee-down: marquee-down var(--marquee-duration, 40s) linear infinite;
+
+  @keyframes marquee-up {
+    to {
+      transform: translateY(-50%);
+    }
+  }
+  @keyframes marquee-down {
+    from {
+      transform: translateY(-50%);
+    }
+  }
 }
 
 body {

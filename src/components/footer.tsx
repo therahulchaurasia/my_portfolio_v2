@@ -6,7 +6,7 @@ export default function Footer() {
       divider={false}
       outerClassName="bg-[#121212] text-white [--line:#ffffff14]"
     >
-      <footer className="w-full py-2 text-sm lg:py-6">
+      <footer className="w-full py-2 text-sm lg:py-10">
         <div className="divide-y divide-dotted divide-line lg:flex lg:divide-y-0">
           {groups.map((group) => (
             <FooterGroup key={group.heading} {...group} />
@@ -36,7 +36,7 @@ function FooterGroup({
   items: string[]
 }) {
   return (
-    <div className="flex items-center justify-between py-2 lg:w-1/2 lg:flex-col lg:items-start lg:justify-between lg:gap-6 lg:py-0">
+    <div className="flex items-center justify-between py-2 lg:w-1/2 lg:flex-col lg:items-start lg:justify-between lg:gap-4 lg:py-0">
       <h3 className="text-xl font-medium text-white/50 lg:text-2xl lg:font-semibold lg:text-white">
         {shortHeading ? (
           <>
