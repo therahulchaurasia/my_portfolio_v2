@@ -1,11 +1,11 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import Container from "@/components/container"
+import "lenis/dist/lenis.css"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import LenisProvider from "@/components/lenis-provider"
 
-// DEV-ONLY cache bypass — REMOVE before production. See memory/CLAUDE.md.
 export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
 export const revalidate = 0
@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col overflow-x-clip">
         <Navbar />
-        {children}
+        <LenisProvider>{children}</LenisProvider>
         <Footer />
       </body>
     </html>

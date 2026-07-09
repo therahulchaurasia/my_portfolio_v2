@@ -1,10 +1,11 @@
 import Container from "./container"
+import { Text } from "@/components/text"
 
 export default function Footer() {
   return (
     <Container
       divider={false}
-      outerClassName="bg-[#121212] text-white [--line:#ffffff14]"
+      outerClassName="bg-[#121212] text-white [--line:#ffffff14] [--foreground-muted:#a1a1a1]"
     >
       <footer className="w-full py-2 text-sm lg:py-10">
         <div className="divide-y divide-dotted divide-line lg:flex lg:divide-y-0">
@@ -37,7 +38,7 @@ function FooterGroup({
 }) {
   return (
     <div className="flex items-center justify-between py-2 lg:w-1/2 lg:flex-col lg:items-start lg:justify-between lg:gap-4 lg:py-0">
-      <h3 className="text-xl font-medium text-white/50 lg:text-2xl lg:font-semibold lg:text-white">
+      <Text as="h3" variant="subtitle" className="text-white/50 lg:text-white">
         {shortHeading ? (
           <>
             <span className="sm:hidden">{shortHeading}</span>
@@ -46,10 +47,12 @@ function FooterGroup({
         ) : (
           heading
         )}
-      </h3>
+      </Text>
       <div className="flex gap-5 text-white lg:gap-4 lg:text-white/70">
         {items.map((item) => (
-          <span key={item}>{item}</span>
+          <Text as="span" variant="body" key={item} className="font-normal!">
+            {item}
+          </Text>
         ))}
       </div>
     </div>

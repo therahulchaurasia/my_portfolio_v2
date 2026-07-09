@@ -1,12 +1,6 @@
-import ProgressiveBlur from "./progressive-blur"
-
-// Hero work wall — two columns of dummy project cards on an infinite vertical
-// marquee (left drifts up, right drifts down), edges dissolved with progressive
-// blur. Pure CSS: no JS, pauses on hover, respects reduced-motion.
-
 type Project = {
   name: string
-  ratio: string // aspect-ratio for card-height variety
+  ratio: string
   background: string
 }
 
@@ -27,18 +21,10 @@ const columnB: Project[] = [
 export default function WorkCarousel({ className }: { className?: string }) {
   return (
     <div className={`relative overflow-hidden ${className ?? ""}`}>
-      <div className="flex gap-4">
+      <div className="absolute inset-0 flex gap-[10px]">
         <Column projects={columnA} animation="animate-marquee-up" />
         <Column projects={columnB} animation="animate-marquee-down" />
       </div>
-      <ProgressiveBlur
-        direction="top"
-        className="absolute inset-x-0 top-0 z-10 h-24"
-      />
-      <ProgressiveBlur
-        direction="bottom"
-        className="absolute inset-x-0 bottom-0 z-10 h-24"
-      />
     </div>
   )
 }
@@ -53,7 +39,7 @@ function Column({
   return (
     <div className="flex-1">
       <div
-        className={`flex flex-col gap-4 ${animation} motion-reduce:animate-none`}
+        className={`flex flex-col gap-[10px] ${animation} motion-reduce:animate-none`}
       >
         {[...projects, ...projects].map((p, i) => (
           <Card key={i} {...p} />
@@ -63,15 +49,11 @@ function Column({
   )
 }
 
-function Card({ name, ratio, background }: Project) {
+function Card({ ratio, background }: Project) {
   return (
     <div
-      className="group/card relative overflow-hidden rounded-2xl"
+      className="overflow-hidden rounded-2xl"
       style={{ aspectRatio: ratio, background }}
-    >
-      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover/card:opacity-100">
-        <span className="text-sm font-medium text-white">{name}</span>
-      </div>
-    </div>
+    />
   )
 }
