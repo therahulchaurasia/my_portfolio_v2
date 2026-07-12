@@ -1,24 +1,68 @@
 "use client"
 
 import { useState } from "react"
+import SendButton, { type SendStatus } from "@/components/send-button"
 
 const FRONT_SHADOW =
   "rgba(0, 0, 0, 0.12) 0px 0.602187px 0.602187px -0.916667px, rgba(0, 0, 0, 0.14) 0px 2.28853px 2.28853px -1.83333px, rgba(0, 0, 0, 0.18) 0px 10px 10px -2.75px"
-
-const PRICING = ["Design Retainer", "Single Project"] as const
-type Pricing = (typeof PRICING)[number]
 
 const FIELD =
   "w-full rounded-xl bg-[#1e1e1e] px-4 py-3.5 text-base font-medium text-white placeholder:text-[#8a8a8a] outline-1 outline-[#ffffff14] transition-[outline-color] focus:outline-primary"
 const LABEL = "text-sm font-semibold text-white"
 
 export default function ContactForm() {
-  const [pricing, setPricing] = useState<Pricing>("Design Retainer")
+  const [status, setStatus] = useState<SendStatus>("idle")
+
+  // Simulated send — replace with the real Resend call once the API route
+  // exists. A message containing "fail" rejects, so the error path is
+  // testable straight from the browser.
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (status === "sending" || status === "success") return
+
+    const form = e.currentTarget
+
+    // Trim every field first so whitespace-only values fail `required` (this
+    // also validates the textarea, which can't take a `pattern`), then let the
+    // browser's constraint API surface the first error.
+    for (const el of Array.from(form.elements)) {
+      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)
+        el.value = el.value.trim()
+    }
+    if (!form.checkValidity()) {
+      form.reportValidity()
+      return
+    }
+
+    const message = new FormData(form).get("message")?.toString() ?? ""
+    setStatus("sending")
+    try {
+      // Send + minimum flight time: even an instant API response keeps the
+      // plane flying 2s so the choreography can breathe.
+      await Promise.all([
+        new Promise((resolve, reject) =>
+          setTimeout(
+            () =>
+              message.toLowerCase().includes("fail")
+                ? reject(new Error("simulated failure"))
+                : resolve(null),
+            600,
+          ),
+        ),
+        new Promise((resolve) => setTimeout(resolve, 2000)),
+      ])
+      setStatus("success")
+    } catch {
+      setStatus("error")
+    }
+  }
 
   return (
     <form
-      // Markup only — submission wired to Resend later.
-      onSubmit={(e) => e.preventDefault()}
+      // Validation runs in the handler (trim first, then constraint API), so
+      // the native pre-submit pass stays off.
+      noValidate
+      onSubmit={handleSubmit}
       className="flex flex-col gap-6 rounded-[20px] bg-[#121212] p-6 text-white md:p-8"
       style={{ boxShadow: FRONT_SHADOW }}
     >
@@ -31,6 +75,7 @@ export default function ContactForm() {
           name="name"
           type="text"
           required
+          minLength={2}
           placeholder="Your name"
           className={FIELD}
         />
@@ -45,52 +90,29 @@ export default function ContactForm() {
           name="email"
           type="email"
           required
+          pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+          title="Enter a valid email, e.g. you@example.com"
           placeholder="Your email"
           className={FIELD}
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className={LABEL}>Pricing model</span>
-        <div className="grid grid-cols-2 gap-2.5">
-          {PRICING.map((p) => (
-            <button
-              key={p}
-              type="button"
-              onClick={() => setPricing(p)}
-              aria-pressed={pricing === p}
-              className={`cursor-pointer rounded-xl px-4 py-3.5 text-sm font-semibold transition-colors ${
-                pricing === p
-                  ? "bg-white text-foreground"
-                  : "bg-[#1e1e1e] text-white/80 outline-1 outline-[#ffffff14] hover:bg-[#242424]"
-              }`}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
-        <input type="hidden" name="pricing" value={pricing} />
-      </div>
-
-      <div className="flex flex-col gap-2">
         <label htmlFor="message" className={LABEL}>
-          Message
+          Message<span className="text-primary">*</span>
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
+          required
+          minLength={10}
           placeholder="Your message"
           className={`${FIELD} resize-y`}
         />
       </div>
 
-      <button
-        type="submit"
-        className="mt-1 w-full cursor-pointer rounded-full bg-gradient-to-b from-[#2f8bff] to-primary py-4 text-center font-semibold text-white shadow-[0_10px_24px_-8px_rgba(6,86,186,0.7)] transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]"
-      >
-        Get in touch
-      </button>
+      <SendButton status={status} />
     </form>
   )
 }
