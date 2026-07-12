@@ -24,6 +24,10 @@
 .DS_Store
 *.pem
 
+# personal working notes
+TODO.md
+portfolio-copy.md
+
 # debug
 npm-debug.log*
 yarn-debug.log*
