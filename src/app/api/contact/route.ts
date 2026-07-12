@@ -2,8 +2,6 @@ import { NextResponse } from "next/server"
 import { Resend } from "resend"
 import { SITE } from "@/lib/site"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request: Request) {
   const { name, email, message } = await request
     .json()
@@ -21,6 +19,10 @@ export async function POST(request: Request) {
   ) {
     return NextResponse.json({ error: "Invalid submission" }, { status: 400 })
   }
+
+  // Constructed per-request so the module can load without the secret —
+  // `next build` evaluates route modules, and build environments have no key.
+  const resend = new Resend(process.env.RESEND_API_KEY)
 
   const { error } = await resend.emails.send({
     from: "Portfolio <hi@workwithrahul.com>",
