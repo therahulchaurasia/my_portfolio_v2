@@ -7,10 +7,6 @@ import Footer from "@/components/footer"
 import LenisProvider from "@/components/lenis-provider"
 import { SITE } from "@/lib/site"
 
-export const dynamic = "force-dynamic"
-export const fetchCache = "force-no-store"
-export const revalidate = 0
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],

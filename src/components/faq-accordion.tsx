@@ -1,6 +1,6 @@
 "use client"
 
-import { Accordion } from "@base-ui-components/react/accordion"
+import { Accordion } from "@base-ui/react/accordion"
 import { Plus } from "lucide-react"
 import { Text } from "@/components/text"
 
