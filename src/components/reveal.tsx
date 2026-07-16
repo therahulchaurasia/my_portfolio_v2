@@ -11,14 +11,18 @@ export default function Reveal({
   className,
   y = 28,
   delay = 0,
+  anatomyId,
 }: {
   children: React.ReactNode;
   className?: string;
   y?: number;
   delay?: number;
+  /** Marks this block as an anatomy spotlight target (data-anatomy-id). */
+  anatomyId?: string;
 }) {
   return (
     <motion.div
+      data-anatomy-id={anatomyId}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -60px 0px" }}

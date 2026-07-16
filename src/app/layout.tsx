@@ -6,6 +6,7 @@ import "lenis/dist/lenis.css"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import LenisProvider from "@/components/lenis-provider"
+import AnatomyProvider from "@/components/anatomy/anatomy-provider"
 import { SITE } from "@/lib/site"
 
 const inter = Inter({
@@ -76,9 +77,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         <LenisProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <AnatomyProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </AnatomyProvider>
         </LenisProvider>
         <Analytics />
       </body>

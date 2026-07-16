@@ -16,9 +16,11 @@ export default function Home() {
       <Faq />
       <Contact />
 
+      {/* z-40 keeps the blur under the anatomy layer (z-45) so the sheet and
+          dots stay crisp; backdrop-filter only blurs what paints below it. */}
       <ProgressiveBlur
         tint={false}
-        className="sticky bottom-0 z-50 -mt-[10svh] h-[10svh]"
+        className="sticky bottom-0 z-40 -mt-[10svh] h-[10svh]"
       />
     </main>
   )

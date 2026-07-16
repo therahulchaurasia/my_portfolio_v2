@@ -56,6 +56,39 @@
       opacity: 0;
     }
   }
+
+  /* Anatomy dot idle pulse: same idea as status-ping but slower and smaller.
+     A fast ping repeated in several sections reads as alarm, not invite. */
+  --animate-anatomy-ping: anatomy-ping 2.8s ease-out infinite;
+  @keyframes anatomy-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+}
+
+/* Anatomy spotlight, applied by AnatomyProvider. The active element gets the
+   ring; everything else in the section fades via .anatomy-faded on the
+   sibling chain (no scrim, no z-index games). !important because motion
+   leaves inline opacity on elements it animated. .anatomy-fade only carries
+   the transition and stays on once applied, so un-fading eases too. */
+.anatomy-ring {
+  outline: 2px solid var(--primary);
+  outline-offset: 8px;
+}
+.anatomy-fade {
+  transition: opacity 0.3s ease;
+}
+.anatomy-faded {
+  opacity: 0.15 !important;
 }
 
 body {
