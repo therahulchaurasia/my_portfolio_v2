@@ -19,9 +19,7 @@ export default function ContactForm() {
 
     const form = e.currentTarget
 
-    // Trim every field first so whitespace-only values fail `required` (this
-    // also validates the textarea, which can't take a `pattern`), then let the
-    // browser's constraint API surface the first error.
+    // Trim first so whitespace-only values fail `required`.
     for (const el of Array.from(form.elements)) {
       if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)
         el.value = el.value.trim()
@@ -34,8 +32,7 @@ export default function ContactForm() {
     const data = Object.fromEntries(new FormData(form))
     setStatus("sending")
     try {
-      // Send + minimum flight time: even an instant API response keeps the
-      // plane flying 2s so the choreography can breathe.
+      // Send + 2s minimum flight time so the plane choreography can breathe.
       const [res] = await Promise.all([
         fetch("/api/contact", {
           method: "POST",
@@ -53,11 +50,14 @@ export default function ContactForm() {
 
   return (
     <form
-      // Validation runs in the handler (trim first, then constraint API), so
-      // the native pre-submit pass stays off.
+      // Validation runs in the handler, so the native pre-submit pass is off.
       noValidate
       onSubmit={handleSubmit}
-      className="flex flex-col gap-6 rounded-[20px] bg-[#121212] p-6 text-white md:p-8"
+      // `is-sent` draws the "what happens next" strike, read cross-column
+      // via #contact:has(form.is-sent) — only after a real send.
+      className={`flex flex-col gap-6 rounded-[20px] bg-[#121212] p-6 text-white md:p-8${
+        status === "success" ? " is-sent" : ""
+      }`}
       style={{ boxShadow: FRONT_SHADOW }}
     >
       <div className="flex flex-col gap-2">
