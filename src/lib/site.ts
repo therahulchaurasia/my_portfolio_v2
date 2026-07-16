@@ -9,4 +9,5 @@ export const SITE = {
   email: "hi@workwithrahul.com",
   twitterHandle: "@rahul_twtss",
   twitter: "https://x.com/rahul_twtss",
+  cal: "https://cal.com/rahul-chaurasiya/intro-and-discovery-call",
 } as const

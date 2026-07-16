@@ -8,6 +8,7 @@ import AnatomyDot from "@/components/anatomy/anatomy-dot";
 import AnatomyPanel, {
   type AnatomyNote,
 } from "@/components/anatomy/anatomy-panel";
+import { SITE } from "@/lib/site";
 
 // Dummy anatomy cards — placeholder copy, Rahul writes the real notes.
 const ANATOMY: AnatomyNote[] = [
@@ -85,12 +86,14 @@ export default function Services() {
                   <Text muted className="mt-2 max-w-[28ch]">
                     {desc}
                   </Text>
-                  <button
-                    type="button"
-                    className="mt-8 w-full cursor-pointer rounded-full bg-gradient-to-b from-[#4d4dda] to-primary py-3.5 text-center font-semibold text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_10px_24px_-8px_rgba(51,51,204,0.6)] transition-transform duration-200 hover:scale-[1.02] active:scale-[0.99]"
+                  <a
+                    href={SITE.cal}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-8 w-full cursor-pointer rounded-full bg-gradient-to-b from-[#4d4dda] to-primary py-3.5 text-center font-semibold text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_10px_24px_-8px_rgba(51,51,204,0.6)] transition-transform duration-200 ease-out hover:-translate-y-0.5 active:-translate-y-0.5 active:scale-[0.97]"
                   >
                     Start a project
-                  </button>
+                  </a>
                 </div>
               </Reveal>
             ))}
