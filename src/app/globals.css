@@ -100,6 +100,18 @@
    sibling chain (no scrim, no z-index games). !important because motion
    leaves inline opacity on elements it animated. .anatomy-fade only carries
    the transition and stays on once applied, so un-fading eases too. */
+
+/* Every target wears a permanently invisible ring so activation animates
+   color only — an outline that appears from nothing can only pop. Lives in
+   the base layer so targets with their own outline utilities (the framed
+   cards) keep theirs; those fall back to the instant ring. */
+@layer base {
+  [data-anatomy-id] {
+    outline: 2px solid transparent;
+    outline-offset: 8px;
+    transition: outline-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+}
 .anatomy-ring {
   outline: 2px solid var(--primary);
   outline-offset: 8px;
