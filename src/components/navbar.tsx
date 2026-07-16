@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { ArrowUpRight, CircleDot, Plus } from "lucide-react"
+import { ArrowUpRight, Plus } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import Container from "@/components/container"
 import ScrollLink from "@/components/scroll-link"
@@ -99,7 +99,12 @@ export default function Navbar() {
                     : "bg-foreground text-background"
                 }`}
               >
-                <CircleDot className="size-4.5" strokeWidth={2} />
+                {/* The site's own annotation mark (see Eyebrow) doubling as the
+                    toggle glyph — anatomy is annotations, so the button wears
+                    the annotation prefix. */}
+                <span className="text-[15px] leading-none font-bold tracking-[-0.06em]">
+                  {"//"}
+                </span>
               </button>
             </motion.div>
 
