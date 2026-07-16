@@ -41,6 +41,12 @@ export default function ContactForm() {
         }),
         new Promise((resolve) => setTimeout(resolve, 2000)),
       ])
+      // DEV STUB: swap in for the fetch above to test the send choreography
+      // without emailing anyone.
+      // const [res] = await Promise.all([
+      //   Promise.resolve({ ok: true, status: 200 }),
+      //   new Promise((resolve) => setTimeout(resolve, 2000)),
+      // ])
       if (!res.ok) throw new Error(`send failed: ${res.status}`)
       setStatus("success")
     } catch {
