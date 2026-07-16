@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Text } from "@/components/text";
 import Eyebrow from "@/components/eyebrow";
@@ -11,14 +11,15 @@ export type AnatomyNote = {
   /** Must match a data-anatomy-id somewhere in the section. */
   id: string;
   title: string;
-  body: string;
+  /** Plain string, or JSX (e.g. multiple <p>) for multi-paragraph notes. */
+  body: ReactNode;
   /**
    * Override shown below the section's collapse breakpoint, for notes whose
    * desktop copy describes layout that doesn't exist on small screens (a
    * two-column grid that stacks, a hover effect that isn't there). Omit when
    * the copy is true everywhere.
    */
-  bodyMobile?: string;
+  bodyMobile?: ReactNode;
   /** Breakpoint where the described layout kicks in. Default "lg". */
   switchAt?: "md" | "lg";
 };
@@ -31,6 +32,26 @@ const item = {
     transition: { duration: 0.4, ease: EASE },
   },
 };
+
+// Renders a note body. Strings become one paragraph; multi-paragraph notes
+// pass JSX (plain <p> elements) and the gap here spaces them.
+function NoteBody({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <Text
+      as="div"
+      muted
+      className={`mt-1.5 flex flex-col gap-2 text-sm! ${className ?? ""}`}
+    >
+      {children}
+    </Text>
+  );
+}
 
 /**
  * The decision cards for one section. Rendered inside the (relative) section,
@@ -100,7 +121,7 @@ export default function AnatomyPanel({
             variants={item}
             className="mx-5 rounded-2xl bg-background/80 p-4 backdrop-blur-md md:mx-0"
           >
-            <Eyebrow>Anatomy</Eyebrow>
+            <Eyebrow>Why it looks like this</Eyebrow>
             <Text as="p" muted className="mt-0.5 text-sm!">
               Design decisions behind this section. Hover or tap a note to see
               what it explains.
@@ -140,25 +161,25 @@ export default function AnatomyPanel({
                     // Both variants render; the breakpoint picks one. CSS
                     // visibility keeps it SSR-safe and live across rotates.
                     <>
-                      <Text
-                        as="p"
-                        muted
-                        className={`mt-1.5 text-sm! ${note.switchAt === "md" ? "md:hidden" : "lg:hidden"}`}
+                      <NoteBody
+                        className={
+                          note.switchAt === "md" ? "md:hidden" : "lg:hidden"
+                        }
                       >
                         {note.bodyMobile}
-                      </Text>
-                      <Text
-                        as="p"
-                        muted
-                        className={`mt-1.5 hidden text-sm! ${note.switchAt === "md" ? "md:block" : "lg:block"}`}
+                      </NoteBody>
+                      <NoteBody
+                        className={
+                          note.switchAt === "md"
+                            ? "hidden md:flex"
+                            : "hidden lg:flex"
+                        }
                       >
                         {note.body}
-                      </Text>
+                      </NoteBody>
                     </>
                   ) : (
-                    <Text as="p" muted className="mt-1.5 text-sm!">
-                      {note.body}
-                    </Text>
+                    <NoteBody>{note.body}</NoteBody>
                   )}
                 </motion.div>
               );

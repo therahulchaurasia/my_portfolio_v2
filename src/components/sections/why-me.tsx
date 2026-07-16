@@ -17,22 +17,23 @@ import AnatomyPanel, {
   type AnatomyNote,
 } from "@/components/anatomy/anatomy-panel"
 
-// Dummy anatomy cards — placeholder copy, Rahul writes the real notes.
+// Design-commentary cards for this section; ids must match the
+// data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
-    id: "why-me-grid",
-    title: "Placeholder: six reasons, one tray",
-    body: "Dummy copy about the shared grey tray holding all six cards. Real note comes later.",
+    id: "why-me-section",
+    title: "Six reasons, one tray",
+    body: "You have options, so this section makes the case for one person doing the whole job. All six cards sit in one shared grey tray. It reads as a single argument, not six separate boasts.",
   },
   {
     id: "why-me-card",
-    title: "Placeholder: the dot counter",
-    body: "Dummy copy about the little progress dots in each card corner. Real note comes later.",
+    title: "The dot counter",
+    body: "Each card carries six dots, and one more fills in as you move across. It is a tiny nudge to read all six in order. Completely unnecessary, which is exactly why it is here.",
   },
   {
     id: "why-me-heading",
-    title: "Placeholder: the section heading",
-    body: "Dummy copy about the heading pattern here. Real note comes later.",
+    title: "The title talks like you",
+    body: "The eyebrow says Benefits, but the title answers the question actually in your head: why him? Copy lands better when it is phrased the way you think. Labels are for me, sentences are for you.",
   },
 ]
 
@@ -77,7 +78,11 @@ const reasons: Reason[] = [
 export default function WhyMe() {
   return (
     <Container>
-      <Section id="why-me" className="relative py-15 md:py-20">
+      <Section
+        id="why-me"
+        anatomyId="why-me-section"
+        className="relative py-15 md:py-20"
+      >
         <div className="flex flex-col gap-8 md:gap-12">
           <Reveal anatomyId="why-me-heading">
             <SectionHeading
@@ -86,10 +91,7 @@ export default function WhyMe() {
               subtext="You get a designer and a developer in one person. Nothing lost in translation, nothing marked up twice."
             />
           </Reveal>
-          <div
-            data-anatomy-id="why-me-grid"
-            className="grid grid-cols-1 gap-1.75 rounded-[20px] bg-[#e5e5e5] p-1.75 md:grid-cols-3"
-          >
+          <div className="grid grid-cols-1 gap-1.75 rounded-[20px] bg-[#e5e5e5] p-1.75 md:grid-cols-3">
             {reasons.map(({ icon: Icon, title, desc }, i) => (
               <Reveal
                 key={title}

@@ -10,22 +10,23 @@ import AnatomyPanel, {
 } from "@/components/anatomy/anatomy-panel";
 import { SITE } from "@/lib/site";
 
-// Dummy anatomy cards — placeholder copy, Rahul writes the real notes.
+// Design-commentary cards for this section; ids must match the
+// data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
-    id: "services-grid",
-    title: "Placeholder: only three services",
-    body: "Dummy copy about keeping the offer narrow on purpose. Real note comes later.",
+    id: "services-section",
+    title: "Why only three services?",
+    body: "A menu with everything on it means no specialty. These are the three things I am genuinely good at, so these are the three I sell. Anything outside them, I will say so and point you to someone better.",
   },
   {
     id: "services-card",
-    title: "Placeholder: the framed card",
-    body: "Dummy copy about the grey frame plus inner card treatment. Real note comes later.",
+    title: "The framed card",
+    body: "Grey tray outside, clean surface inside, one soft shadow. It is the same card recipe used across the whole page. Repeat one detail enough times and the page feels designed instead of decorated.",
   },
   {
     id: "services-heading",
-    title: "Placeholder: the section heading",
-    body: "Dummy copy about the heading pattern here. Real note comes later.",
+    title: "Narrow on purpose",
+    body: "The subtext admits the limit out loud: three things, done properly. A small promise you can verify beats a big one you cannot. Constraint reads as confidence.",
   },
 ];
 
@@ -52,7 +53,11 @@ const services: Service[] = [
 export default function Services() {
   return (
     <Container>
-      <Section id="services" className="relative py-15 md:py-20">
+      <Section
+        id="services"
+        anatomyId="services-section"
+        className="relative py-15 md:py-20"
+      >
         <div className="flex flex-col gap-8 md:gap-12">
           <Reveal anatomyId="services-heading">
             <SectionHeading
@@ -61,10 +66,7 @@ export default function Services() {
               subtext="Three things, done properly. Narrow on purpose, so the quality never dips."
             />
           </Reveal>
-          <div
-            data-anatomy-id="services-grid"
-            className="grid grid-cols-1 gap-4 md:grid-cols-3"
-          >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {services.map(({ title, desc }, i) => (
               <Reveal
                 key={title}

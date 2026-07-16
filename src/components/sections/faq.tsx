@@ -9,29 +9,34 @@ import AnatomyPanel, {
   type AnatomyNote,
 } from "@/components/anatomy/anatomy-panel"
 
-// Dummy anatomy cards — placeholder copy, Rahul writes the real notes.
+// Design-commentary cards for this section; ids must match the
+// data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
-    id: "faq-accordion",
-    title: "Placeholder: the accordion",
-    body: "Dummy copy about answering objections in an accordion instead of a wall of text. Real note comes later.",
+    id: "faq-section",
+    title: "FAQs are objections",
+    body: "Nobody reads FAQs for fun. These are the doubts that stop people from reaching out: price, timeline, what happens after launch. Every answer removes one reason to close the tab. That is why this sits right before the contact form.",
   },
   {
     id: "faq-title",
-    title: "Placeholder: the one word title",
-    body: "Dummy copy about the short title treatment. Real note comes later.",
+    title: "One word, full stop",
+    body: "Questions. The period carries the confidence. You already know what an FAQ section is, so any longer title would be decoration.",
   },
   {
     id: "faq-heading",
-    title: "Placeholder: the split layout",
-    body: "Dummy copy about the heading column next to the questions. Real note comes later.",
+    title: "Why the empty half",
+    body: "One column for the questions, one with almost nothing. The quiet half keeps the accordion lines short enough to actually read. Empty space doing work, not missing content.",
   },
 ]
 
 export default function Faq() {
   return (
     <Container>
-      <Section id="faq" className="relative py-15 md:py-20">
+      <Section
+        id="faq"
+        anatomyId="faq-section"
+        className="relative py-15 md:py-20"
+      >
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal anatomyId="faq-heading" className="flex flex-col gap-3">
             <div
@@ -46,7 +51,7 @@ export default function Faq() {
             </Text>
           </Reveal>
 
-          <Reveal anatomyId="faq-accordion" delay={0.1}>
+          <Reveal delay={0.1}>
             <FaqAccordion items={faqs} />
           </Reveal>
         </div>

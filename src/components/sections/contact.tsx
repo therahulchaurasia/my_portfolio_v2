@@ -9,26 +9,27 @@ import AnatomyPanel, {
   type AnatomyNote,
 } from "@/components/anatomy/anatomy-panel";
 
-// Dummy anatomy cards — placeholder copy, Rahul writes the real notes.
+// Design-commentary cards for this section; ids must match the
+// data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
     id: "contact-form",
-    title: "Placeholder: the form",
-    body: "Dummy copy about keeping the form short and what happens after send. Real note comes later.",
-    // Demo of the responsive override; real copy later. Contact's two-column
-    // grid collapses below lg, matching the default switchAt.
+    title: "The form is the whole point",
+    body: "Everything above exists to earn this form. It only asks what I need to reply: who you are, where to answer, what you want built. Short forms get sent, long ones get abandoned. When you hit send, watch the button.",
+    // Contact's two-column grid collapses below lg (the default switchAt),
+    // and the stacked order puts the form second, so the note mentions it.
     bodyMobile:
-      "Dummy mobile copy for when the grid is stacked and the form sits between heading and steps. Real note comes later.",
+      "Everything above exists to earn this form, so on a phone it cuts the line: heading first, form second, the steps card after. It only asks what I need to reply. When you hit send, watch the button.",
   },
   {
     id: "contact-steps",
-    title: "Placeholder: what happens next",
-    body: "Dummy copy about spelling out the three steps so the form feels safe to send. Real note comes later.",
+    title: "What happens next, spelled out",
+    body: "Sending a form usually feels like posting into a void. These three lines say exactly what happens after, so there is no black hole. Once your message goes through, step one crosses itself off the list.",
   },
   {
     id: "contact-heading",
-    title: "Placeholder: the closing pitch",
-    body: "Dummy copy about the last conversion push wording. Real note comes later.",
+    title: "No new pitch",
+    body: "Ready to start? is a yes or no question on purpose. You have seen the work, the services, and the answers by now. This corner does not sell anything new, it just holds the door open.",
   },
 ];
 

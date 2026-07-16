@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import Section from "@/components/section"
 import Container from "@/components/container"
 import SectionHeading from "@/components/section-heading"
@@ -9,46 +10,36 @@ import AnatomyPanel, {
   type AnatomyNote,
 } from "@/components/anatomy/anatomy-panel"
 import { ArrowUpRight } from "lucide-react"
+import { PROJECTS } from "@/lib/projects"
 
-// Dummy anatomy cards — placeholder copy, Rahul writes the real notes.
+// Design-commentary cards for this section; ids must match the
+// data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
-    id: "work-grid",
-    title: "Placeholder: the two column grid",
-    body: "Dummy copy about why the projects sit in a two column grid instead of a list or masonry. Real note comes later.",
+    id: "work-section",
+    title: "Why only two projects?",
+    body: "Selected means selected. Only work I would happily build again gets a slot. Two big cards you can actually look at beat ten thumbnails you scroll past.",
   },
   {
     id: "work-card",
-    title: "Placeholder: the card hover",
-    body: "Dummy copy about the chip reveal and the arrow spring on hover. Real note comes later.",
+    title: "Details on request",
+    body: "The tags stay hidden until you ask. On hover the title rides up by exactly the chips' height, so nothing jumps. On touch there is no hover, so the chips simply stay open.",
   },
   {
     id: "work-heading",
-    title: "Placeholder: the section heading",
-    body: "Dummy copy about the eyebrow plus title plus subtext pattern. Real note comes later.",
-  },
-]
-
-// tags: [project type, scope/role] — max two, chips get crowded past that.
-type Project = { title: string; image?: string; tags?: string[] }
-
-const projects: Project[] = [
-  {
-    title: "With Sam",
-    image: "/showcase/withsam.jpeg",
-    tags: ["Portfolio + CMS", "Development"],
-  },
-  {
-    title: "Asahi",
-    image: "/showcase/asahi.jpeg",
-    tags: ["Landing page + CMS", "Development"],
+    title: "The heading formula",
+    body: "Small label, big line, one sentence of context. Every section on this page opens with the same three beats. The repetition is what makes the page feel calm instead of busy.",
   },
 ]
 
 export default function Work() {
   return (
     <Container>
-      <Section id="work" className="relative py-15 md:py-20">
+      <Section
+        id="work"
+        anatomyId="work-section"
+        className="relative py-15 md:py-20"
+      >
         <div className="flex flex-col gap-3.75 md:gap-6.25 xl:gap-12.5">
           <Reveal anatomyId="work-heading">
             <SectionHeading
@@ -57,15 +48,12 @@ export default function Work() {
               subtext="Real projects, built end to end, from design through deployment."
             />
           </Reveal>
-          <div
-            data-anatomy-id="work-grid"
-            className="group/work grid grid-cols-1 gap-2.5 md:grid-cols-2"
-          >
+          <div className="group/work grid grid-cols-1 gap-2.5 md:grid-cols-2">
             {/* <div
               aria-hidden
               className="pointer-events-none fixed inset-0 z-40 bg-black/85 opacity-0 transition-opacity duration-300 group-has-[[data-work-card]:hover]/work:opacity-100"
             /> */}
-            {projects.map(({ title, image, tags }, i) => (
+            {PROJECTS.map(({ slug, title, cover, tags }, i) => (
               <Reveal
                 key={title}
                 anatomyId={i === 0 ? "work-card" : undefined}
@@ -74,20 +62,25 @@ export default function Work() {
                 delay={(i % 2) * 0.08}
                 className="group/card relative aspect-[5/4] cursor-pointer overflow-hidden rounded-2xl bg-[#eaeaea] hover:z-45"
               >
-                {image && (
-                  /* Image zooms smoothly both ways — no spring, no snap:
-                     photos read as material, and material doesn't bounce.
-                     Slower in (depth), quicker but still soft out.
-                     pointer-fine keeps touch taps from zooming a card they
-                     can't un-hover. */
-                  <Image
-                    src={image}
-                    alt={title}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] pointer-fine:group-hover/card:scale-[1.04] group-hover/card:duration-[900ms] motion-reduce:transition-none"
-                  />
-                )}
+                {/* Image zooms smoothly both ways — no spring, no snap:
+                    photos read as material, and material doesn't bounce.
+                    Slower in (depth), quicker but still soft out.
+                    pointer-fine keeps touch taps from zooming a card they
+                    can't un-hover. */}
+                <Image
+                  src={cover}
+                  alt={title}
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] pointer-fine:group-hover/card:scale-[1.04] group-hover/card:duration-[900ms] motion-reduce:transition-none"
+                />
+                {/* Stretched link: whole card is the tap target, chips and
+                    arrow stay decorative underneath. */}
+                <Link
+                  href={`/work/${slug}`}
+                  aria-label={`${title} — case study`}
+                  className="absolute inset-0 z-10"
+                />
                 <div className="absolute bottom-5 left-5 flex flex-col items-start">
                   <Text as="h3" variant="subtitle">
                     {title}
