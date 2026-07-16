@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import {
   AnimatePresence,
   MotionConfig,
@@ -37,8 +38,18 @@ const planeVariants: Variants = {
   },
   exit: (status: SendStatus) =>
     status === "error"
-      ? { x: 34, y: 60, rotate: 75, transition: { duration: 0.45, ease: "easeIn" } }
-      : { x: 60, y: -35, rotate: 0, transition: { duration: 0.4, ease: "easeIn" } },
+      ? {
+          x: 34,
+          y: 60,
+          rotate: 75,
+          transition: { duration: 0.45, ease: "easeIn" },
+        }
+      : {
+          x: 60,
+          y: -35,
+          rotate: 0,
+          transition: { duration: 0.4, ease: "easeIn" },
+        },
 }
 
 // Paper plane paths. All three shapes share one path structure so `d` can
@@ -72,10 +83,24 @@ const STREAKS = [
 export default function SendButton({ status }: { status: SendStatus }) {
   const failed = status === "error"
   const flying = status === "sending"
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  // Takeoff flare on success. The exiting plane's React props are frozen by
+  // AnimatePresence, so the flare can't render conditionally — instead the
+  // SMIL <animate> elements sit in the SVG with begin="indefinite" and get
+  // kicked imperatively here (the DOM node lives on through the exit).
+  // Because they begin later than the looping flap, SMIL gives them priority.
+  useEffect(() => {
+    if (status !== "success") return
+    buttonRef.current
+      ?.querySelectorAll<SVGAnimateElement>("animate[data-plane-flare]")
+      .forEach((a) => a.beginElement())
+  }, [status])
 
   return (
     <MotionConfig reducedMotion="user">
       <button
+        ref={buttonRef}
         type="submit"
         data-status={status}
         disabled={status === "sending" || status === "success"}
@@ -196,9 +221,7 @@ function PaperPlane({ flying }: { flying: boolean }) {
         className="flex"
         animate={flying ? { rotate: [0, 3, -1.5, 2, 0] } : { rotate: 0 }}
         transition={
-          flying
-            ? { duration: 1.7, repeat: Infinity, ease: "easeInOut" }
-            : POP
+          flying ? { duration: 1.7, repeat: Infinity, ease: "easeInOut" } : POP
         }
       >
         <svg
@@ -211,35 +234,62 @@ function PaperPlane({ flying }: { flying: boolean }) {
           className="plane-svg size-5"
         >
           <style>{planeCss}</style>
-          <path
-            className="plane-outline"
-            d={PLANE.outline.rest}
-            style={{ animation: flying ? "plane-flap 1.1s ease-in-out infinite" : undefined }}
-          />
-          <path
-            className="plane-fold"
-            d={PLANE.fold.rest}
-            style={{ animation: flying ? "plane-fold-flap 1.1s ease-in-out infinite" : undefined }}
-          />
+          <path d={PLANE.outline.rest}>
+            {flying && <Flap values={PLANE.outline} />}
+            <Flare to={PLANE.outline.flare} />
+          </path>
+          <path d={PLANE.fold.rest}>
+            {flying && <Flap values={PLANE.fold} />}
+            <Flare to={PLANE.fold.flare} />
+          </path>
         </svg>
       </motion.span>
     </motion.span>
   )
 }
 
-// Motion can't tween SVG path `d`, so the flap and takeoff-flare morphs run
-// on native CSS. The flare keys off the button's data-status because the
-// exiting plane's React props are frozen by AnimatePresence; !important beats
-// the frozen inline flap animation.
+// The flap and takeoff-flare morphs run on SMIL (<animate> inside the SVG)
+// instead of CSS `d: path()`, which Safari/WebKit doesn't support — SMIL
+// morphs work in every engine. Motion can't tween `d` either, hence native.
+
+// In-flight wing flap: rest <-> flex, looping while mounted (mounted only
+// while `flying`; if props freeze mid-exit it keeps flapping, which is the
+// wanted look for the error fall — the success flare out-prioritizes it).
+function Flap({ values }: { values: { rest: string; flex: string } }) {
+  return (
+    <animate
+      attributeName="d"
+      values={`${values.rest};${values.flex};${values.rest}`}
+      keyTimes="0;0.5;1"
+      calcMode="spline"
+      keySplines="0.42 0 0.58 1;0.42 0 0.58 1"
+      dur="1.1s"
+      repeatCount="indefinite"
+    />
+  )
+}
+
+// Wings-spread takeoff pose. begin="indefinite" parks it until SendButton's
+// success effect calls beginElement(); a to-animation starts from whatever
+// the flap is showing mid-cycle, so there is no snap back to rest first.
+function Flare({ to }: { to: string }) {
+  return (
+    <animate
+      data-plane-flare=""
+      attributeName="d"
+      to={to}
+      begin="indefinite"
+      dur="0.35s"
+      calcMode="spline"
+      keyTimes="0;1"
+      keySplines="0.33 0 0.2 1"
+      fill="freeze"
+    />
+  )
+}
+
+// Hover boop stays CSS — it's a transform, safe everywhere.
 const planeCss = `
-  @keyframes plane-flap {
-    0%, 100% { d: path("${PLANE.outline.rest}"); }
-    50% { d: path("${PLANE.outline.flex}"); }
-  }
-  @keyframes plane-fold-flap {
-    0%, 100% { d: path("${PLANE.fold.rest}"); }
-    50% { d: path("${PLANE.fold.flex}"); }
-  }
   @keyframes plane-boop {
     0%, 100% { transform: translateX(0); }
     35% { transform: translateX(5px); }
@@ -247,16 +297,6 @@ const planeCss = `
   }
   button[data-status="idle"]:hover .plane-svg {
     animation: plane-boop 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
-  }
-  button[data-status="success"] .plane-outline {
-    animation: none !important;
-    d: path("${PLANE.outline.flare}");
-    transition: d 0.35s cubic-bezier(0.33, 0, 0.2, 1);
-  }
-  button[data-status="success"] .plane-fold {
-    animation: none !important;
-    d: path("${PLANE.fold.flare}");
-    transition: d 0.35s cubic-bezier(0.33, 0, 0.2, 1);
   }
 `
 
@@ -282,7 +322,11 @@ function ResultMessage({ status }: { status: SendStatus }) {
             key="error"
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 40, opacity: 0, transition: { duration: 0.25, ease: "easeIn" } }}
+            exit={{
+              y: 40,
+              opacity: 0,
+              transition: { duration: 0.25, ease: "easeIn" },
+            }}
             transition={{ ...POP, delay: 0.2 }}
           >
             Try again later or email me directly
