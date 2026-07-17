@@ -14,18 +14,13 @@ import AnatomyPanel, {
 const ANATOMY: AnatomyNote[] = [
   {
     id: "faq-section",
-    title: "FAQs are objections",
-    body: "Nobody reads FAQs for fun. These are the doubts that stop people from reaching out: price, timeline, what happens after launch. Every answer removes one reason to close the tab. That is why this sits right before the contact form.",
+    title: "Clear doubts early",
+    body: "People hesitate over the same few things: price, timeline, life after launch. I answer them right before the contact form, so nothing holds anyone back.",
   },
   {
-    id: "faq-title",
-    title: "One word, full stop",
-    body: "Questions. The period carries the confidence. You already know what an FAQ section is, so any longer title would be decoration.",
-  },
-  {
-    id: "faq-heading",
-    title: "Why the empty half",
-    body: "One column for the questions, one with almost nothing. The quiet half keeps the accordion lines short enough to actually read. Empty space doing work, not missing content.",
+    id: "faq-accordion",
+    title: "Notice how the answers open?",
+    body: "Open one and watch closely. It's subtle, but I think it feels good. What do you think?",
   },
 ]
 
@@ -38,11 +33,8 @@ export default function Faq() {
         className="relative py-15 md:py-20"
       >
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <Reveal anatomyId="faq-heading" className="flex flex-col gap-3">
-            <div
-              data-anatomy-id="faq-title"
-              className="flex flex-col gap-[5px]"
-            >
+          <Reveal className="flex flex-col gap-3">
+            <div className="flex flex-col gap-[5px]">
               <Eyebrow>FAQ</Eyebrow>
               <Text variant="title">Questions.</Text>
             </div>
@@ -51,7 +43,7 @@ export default function Faq() {
             </Text>
           </Reveal>
 
-          <Reveal delay={0.1}>
+          <Reveal delay={0.1} anatomyId="faq-accordion">
             <FaqAccordion items={faqs} />
           </Reveal>
         </div>

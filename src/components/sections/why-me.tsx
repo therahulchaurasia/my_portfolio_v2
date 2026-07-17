@@ -21,19 +21,9 @@ import AnatomyPanel, {
 // data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
-    id: "why-me-section",
-    title: "Six reasons, one tray",
-    body: "You have options, so this section makes the case for one person doing the whole job. All six cards sit in one shared grey tray. It reads as a single argument, not six separate boasts.",
-  },
-  {
     id: "why-me-card",
-    title: "The dot counter",
-    body: "Each card carries six dots, and one more fills in as you move across. It is a tiny nudge to read all six in order. Completely unnecessary, which is exactly why it is here.",
-  },
-  {
-    id: "why-me-heading",
-    title: "The title talks like you",
-    body: "The eyebrow says Benefits, but the title answers the question actually in your head: why him? Copy lands better when it is phrased the way you think. Labels are for me, sentences are for you.",
+    title: "Counted the dots?",
+    body: "Each card fills in one more. A tiny nudge to read all six, and yes, I know it's unnecessary.",
   },
 ]
 
@@ -78,13 +68,9 @@ const reasons: Reason[] = [
 export default function WhyMe() {
   return (
     <Container>
-      <Section
-        id="why-me"
-        anatomyId="why-me-section"
-        className="relative py-15 md:py-20"
-      >
+      <Section id="why-me" className="relative py-15 md:py-20">
         <div className="flex flex-col gap-8 md:gap-12">
-          <Reveal anatomyId="why-me-heading">
+          <Reveal>
             <SectionHeading
               eyebrow="Benefits"
               title="Why work with me"

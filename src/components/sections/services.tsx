@@ -14,19 +14,9 @@ import { SITE } from "@/lib/site";
 // data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
-    id: "services-section",
-    title: "Why only three services?",
-    body: "A menu with everything on it means no specialty. These are the three things I am genuinely good at, so these are the three I sell. Anything outside them, I will say so and point you to someone better.",
-  },
-  {
     id: "services-card",
-    title: "The framed card",
-    body: "Grey tray outside, clean surface inside, one soft shadow. It is the same card recipe used across the whole page. Repeat one detail enough times and the page feels designed instead of decorated.",
-  },
-  {
-    id: "services-heading",
-    title: "Narrow on purpose",
-    body: "The subtext admits the limit out loud: three things, done properly. A small promise you can verify beats a big one you cannot. Constraint reads as confidence.",
+    title: "Every card has its own button",
+    body: "Found the one you need? Book a call right there. You shouldn't have to scroll around looking for how to reach me.",
   },
 ];
 
@@ -53,13 +43,9 @@ const services: Service[] = [
 export default function Services() {
   return (
     <Container>
-      <Section
-        id="services"
-        anatomyId="services-section"
-        className="relative py-15 md:py-20"
-      >
+      <Section id="services" className="relative py-15 md:py-20">
         <div className="flex flex-col gap-8 md:gap-12">
-          <Reveal anatomyId="services-heading">
+          <Reveal>
             <SectionHeading
               eyebrow="Services"
               title="Services"

@@ -13,23 +13,14 @@ import AnatomyPanel, {
 // data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
-    id: "contact-form",
-    title: "The form is the whole point",
-    body: "Everything above exists to earn this form. It only asks what I need to reply: who you are, where to answer, what you want built. Short forms get sent, long ones get abandoned. When you hit send, watch the button.",
-    // Contact's two-column grid collapses below lg (the default switchAt),
-    // and the stacked order puts the form second, so the note mentions it.
-    bodyMobile:
-      "Everything above exists to earn this form, so on a phone it cuts the line: heading first, form second, the steps card after. It only asks what I need to reply. When you hit send, watch the button.",
-  },
-  {
-    id: "contact-steps",
-    title: "What happens next, spelled out",
-    body: "Sending a form usually feels like posting into a void. These three lines say exactly what happens after, so there is no black hole. Once your message goes through, step one crosses itself off the list.",
-  },
-  {
     id: "contact-heading",
-    title: "No new pitch",
-    body: "Ready to start? is a yes or no question on purpose. You have seen the work, the services, and the answers by now. This corner does not sell anything new, it just holds the door open.",
+    title: "Every page needs a closer",
+    body: "You've seen the work and the answers by now. If you're convinced, you shouldn't have to hunt for a way to reach me, so the ask sits right here.",
+  },
+  {
+    id: "contact-form",
+    title: "Keep an eye on the send button",
+    body: "That's no ordinary button. Send the form and see for yourself, it's my favorite detail on the whole site.",
   },
 ];
 
@@ -83,7 +74,6 @@ export default function Contact() {
               {/* Default framed card (same recipe as services / why-me): grey
                   frame + inset inner surface. */}
               <div
-                data-anatomy-id="contact-steps"
                 className="relative flex flex-col rounded-2xl bg-background p-6 outline-1 outline-[#e2e2e2] [outline-offset:-3px]"
                 style={{ boxShadow: FRONT_SHADOW }}
               >

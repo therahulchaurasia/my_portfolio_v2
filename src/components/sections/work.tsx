@@ -16,19 +16,28 @@ import { PROJECTS } from "@/lib/projects"
 // data-anatomy-id attributes below.
 const ANATOMY: AnatomyNote[] = [
   {
+    id: "work-heading",
+    title: "Every section has its own title",
+    body: (
+      <>
+        <p>Titles allows people to scan the page quickly.</p>
+        <p>
+          Each section opens the same way: a tiny eyebrow word up top, one bold
+          line, then a sentence to set it up. That eyebrow is the little label,
+          and it tells you which part of the site you have landed on.
+        </p>
+      </>
+    ),
+  },
+  {
     id: "work-section",
-    title: "Why only two projects?",
-    body: "Selected means selected. Only work I would happily build again gets a slot. Two big cards you can actually look at beat ten thumbnails you scroll past.",
+    title: "Let the work speak first",
+    body: "I would rather let big, high res shots do the talking than bury you in text. So I keep things clean up front, and only bring out the details once you actually want a closer look.",
   },
   {
     id: "work-card",
-    title: "Details on request",
-    body: "The tags stay hidden until you ask. On hover the title rides up by exactly the chips' height, so nothing jumps. On touch there is no hover, so the chips simply stay open.",
-  },
-  {
-    id: "work-heading",
-    title: "The heading formula",
-    body: "Small label, big line, one sentence of context. Every section on this page opens with the same three beats. The repetition is what makes the page feel calm instead of busy.",
+    title: "The tags hide until you hover",
+    body: "Hover a card and the title slides up by exactly the tags' height, so the chips appear without anything jumping around. No hover on a phone, so there the tags just stay put.",
   },
 ]
 
